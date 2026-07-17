@@ -131,16 +131,18 @@ export default function Home() {
 
         root.querySelectorAll<HTMLElement>("[data-counter]").forEach((element) => {
           const end = Number(element.dataset.counter);
+          const prefix = element.dataset.prefix ?? "";
           const suffix = element.dataset.suffix ?? "";
+          const fractionDigits = Number.isInteger(end) ? 0 : 2;
           const value = { current: 0 };
           gsap.to(value, {
             current: end,
             duration: 1.45,
             ease: "power2.out",
-            snap: { current: 1 },
+            snap: { current: fractionDigits ? 0.01 : 1 },
             scrollTrigger: { trigger: element, start: "top 60%", once: true },
             onUpdate: () => {
-              element.textContent = `${new Intl.NumberFormat("pt-BR").format(value.current)}${suffix}`;
+              element.textContent = `${prefix}${new Intl.NumberFormat("pt-BR", { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits }).format(value.current)}${suffix}`;
             },
           });
         });
@@ -196,7 +198,7 @@ export default function Home() {
 
     <section className="steps section"><img className="shapes-steps s1" src="/shapes-steps-1.png" alt="" /><img className="shapes-steps s2" src="/shapes-steps-2.png" alt="" /><div className="container"><span className="eyebrow dark">Simples e seguro</span><h2>Três passos para proteger o caixa da sua empresa.</h2><div className="grid"><article><b>01</b><h3>Fale com um especialista</h3><p>Entendemos o seu cenário e a melhor solução.</p></article><article><b>02</b><h3>Ative o acesso</h3><p>Processo rápido, guiado e sem burocracia.</p></article><article><b>03</b><h3>Consulte, cobre e recupere</h3><p>Mais critério para vender e cobrar.</p></article></div></div></section>
 
-    <section className={`section ${styles.companies}`}><div className="container"><span className="eyebrow">Empresas protegidas</span><h2>Empresas que vendem a prazo usam a Hiper Check para <em>proteger o caixa.</em></h2><div className={styles.stats}><article><b data-counter="5000" data-suffix="+">5.000+</b><span>Empresas protegidas</span><small>Total de clientes atendidos</small></article><article><b data-counter="3000000" data-suffix="+">3.000.000+</b><span>Recuperados em inadimplência</span><small>Em valores de carteiras atendidas</small></article><article><b data-counter="50000" data-suffix="+">50.000+</b><span>Consultas realizadas por mês</span><small>Decisões de crédito mais seguras</small></article><article><b data-counter="15" data-suffix="+">15+</b><span>Anos de mercado</span><small>Experiência para apoiar seu negócio</small></article></div></div></section>
+    <section className={`section ${styles.companies}`}><div className="container"><span className="eyebrow">Empresas protegidas</span><h2>Empresas que vendem a prazo usam a Hiper Check para <em>proteger o caixa.</em></h2><div className={styles.stats}><article><b data-counter="1600" data-prefix="+">+1.600</b><span>Empresas atendidas</span><small>Total de clientes atendidos</small></article><article><b data-counter="11239258.52" data-prefix="+">+11.239.258,52</b><span>Recuperados</span><small>Em valores de carteiras atendidas</small></article><article><b data-counter="30000" data-prefix="+">+30.000</b><span>Consultas por mês</span><small>Decisões de crédito mais seguras</small></article><article><b data-counter="15">15</b><span>Anos de mercado</span><small>Experiência para apoiar seu negócio</small></article></div></div></section>
 
     <section className="section faq"><div className="container"><span className="eyebrow">Dúvidas frequentes</span><h2>Perguntas de quem está avaliando a Hiper Check.</h2>{faqs.map(([q,a], i) => <div className="faq-item" key={q}><button onClick={() => setOpen(open === i ? -1 : i)}><span>{q}</span>{open === i ? <Xmark aria-label="Fechar resposta" /> : <Plus aria-label="Abrir resposta" />}</button>{open === i && <p>{a}</p>}</div>)}</div></section>
 
